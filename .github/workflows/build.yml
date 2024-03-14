@@ -56,9 +56,9 @@ jobs:
         working-directory: ./quarkus
         run: |
           # run the built image
-          docker run -d --rm --name lra-coordinator --network host quay.io/jbosstm/lra-coordinator:1.0.0-SNAPSHOT
+          docker run -d --rm --name lra-coordinator --network host -p 8081:8080 quay.io/jbosstm/lra-coordinator:1.0.0-SNAPSHOT
           # run the TCK in Quarkus with the produced image, project is already built from previous step
-          mvn clean verify -pl tcks/microprofile-lra -Dtcks -Dlra.coordinator.url=http://localhost:8080/lra-coordinator
+          mvn clean verify -pl tcks/microprofile-lra -Dtcks -Dlra.coordinator.url=http://localhost:8081/lra-coordinator
           echo "Saving lra-coordinator image logs to $PWD/lra-coordinator.log"
           docker logs lra-coordinator >"./lra-coordinator.log" 2>&1
           docker kill lra-coordinator
